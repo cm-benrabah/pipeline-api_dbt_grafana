@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg_db
+    environment:
+      POSTGRES_USER: cm_benrabah
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: crypto_db
+    ports:
+      - "5432:5432"
+    volumes:
+           - ./data/db:/docker-entrypoint-initdb.d # # - pg_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+    
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - postgres
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      # - GF_DATABASE_TYPE=postgres
+      # - GF_DATABASE_HOST=postgres:5432
+      # - GF_DATABASE_NAME=crypto_db
+      # - GF_DATABASE_USER=cm_benrabah
+      # - GF_DATABASE_PASSWORD=pass
+      #- GF_DATABASE_SSL_MODE=required 
+      - GF_LOG_LEVEL=debug
+      - GF_LOG_MODE=console
+      - GF_DATABASE_URL=postgres://cm_benrabah:pass@postgres:5432/crypto_db
+    ports:
+      - "3000:3000"
+    volumes:
+       #- grafana_data:/var/lib/grafana
+       - ./grafana/DataSource/data_source.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+       - ./grafana/Dashboard/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+       - ./grafana/Dashboard:/etc/grafana/provisioning/dashboards/
+       
+    
+       #- ./grafana/Dashboards:/var/lib/grafana/dashboards        #- ./grafana/Dashboards:/etc/grafana/provisioning/dashboards
+
+  python:
+    
+    build: ./containers/python  
+    container_name: python_crypto
+    volumes:
+      - ./containers/python:/usr/src/app  # Mount local directory to container
+      - ./dbt:/usr/src/app/dbt  # Mount the dbt folder to the container
+    # tty: true
+    # stdin_open: true    
+    # command: sleep infinity
+    depends_on:
+      - postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: cm_benrabah@esi.dz  # Default pgAdmin login email
+      PGADMIN_DEFAULT_PASSWORD: pass  # Default pgAdmin login password
+      PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: 'False'
+      PGADMIN_CONFIG_WTF_CSRF_ENABLED: 'False'
+    ports:
+      - "8080:80"  # Expose pgAdmin on port 8080
+    depends_on:
+      - postgres  # Ensure pgAdmin starts after PostgreSQL
+    # volumes:
+      # # - pgadmin_data:/var/lib/pgadmin  # Persist pgAdmin data
+
+volumes:
+  postgres_data:
+  #grafana_data:
+
+

@@ -1,0 +1,23 @@
+# Configuration file version
+apiVersion: 1
+deleteDatasources:
+  - name: PG_db
+    orgId: 1
+prune: true
+datasources:
+  - name: PostgreSQL
+    type: postgres
+    access: proxy
+    orgId: 1
+    #uid: my_unique_uid
+    url: postgres:5432
+    user: cm_benrabah
+    database: crypto_db
+    basicAuth: false
+    isDefault: true
+    jsonData:
+      sslmode: "disable"
+    secureJsonData:
+      password: pass
+    version: 1
+    editable: true

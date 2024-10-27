@@ -1,0 +1,27 @@
+# ---
+# config:
+  # send_anonymous_usage_stats: false
+# sde_dbt_tutorial:
+  # target: dev
+  # outputs:
+    # dev:
+      # type: duckdb
+      # path: ./dbt.duckdb
+    # prod:
+      # type: duckdb
+      # path: ./dbt-prod.duckdb
+
+# profiles.yml
+
+crypto_profile:  # Name of the profile (matches dbt_project.yml)
+  target: public  # Target environment
+  outputs:
+    public:
+      type: postgres
+      host: postgres  # Use the service name from Docker Compose
+      user: cm_benrabah
+      password: pass
+      dbname: crypto_db
+      schema: public  # Specify schema (public is default in PostgreSQL)
+      port: 5432
+      threads: 1
