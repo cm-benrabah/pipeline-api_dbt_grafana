@@ -73,5 +73,21 @@ crypto-data-pipeline/
     ```bash
     docker-compose up 
     ```
+3. **Data vizualization**:
 
+-## 3. Data Visualization
+
+To visualize the data in Grafana, follow these steps:
+
+1. Open your web browser and navigate to: http://localhost:3000
+
+
+2. Log in with the default credentials:
+
+- **User**: `admin`
+- **Password**: `admin`
+
+3. Once logged in, go to the **Dashboard** section. You should see a dashboard similar to the following:
+
+![Crypto Pipeline](assets/images/grafana-dashboard.png)
 
