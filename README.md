@@ -50,7 +50,7 @@ crypto-data-pipeline/
 │   └── dbt_project.yml       # dbt configuration
 ├── grafana/                  # Grafana configuration and dashboard files
 └── README.md                 # Project documentation
-
+```
 
 ## Setup Instructions
 
